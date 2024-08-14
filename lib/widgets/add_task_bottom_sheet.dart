@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/model/task_model.dart';
 
-class AddTaskBottomSheet extends StatelessWidget {
-  const AddTaskBottomSheet({
+class AddTaskBottomSheet extends StatefulWidget {
+  AddTaskBottomSheet({
     super.key,
   });
+
+  @override
+  State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
+}
+
+class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
+  TextEditingController titleTextFiled = TextEditingController();
+
+  TextEditingController descTextFiled = TextEditingController();
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,7 @@ class AddTaskBottomSheet extends StatelessWidget {
               height: 18,
             ),
             TextField(
-              // controller: ,
+              controller: titleTextFiled,
               decoration: InputDecoration(
                 labelText: "Title",
                 // labelStyle: Theme.of(context).textTheme.titleMedium,
@@ -40,7 +53,7 @@ class AddTaskBottomSheet extends StatelessWidget {
               height: 24,
             ),
             TextField(
-              // controller: ,
+              controller: descTextFiled,
               decoration: InputDecoration(
                 labelText: "Description",
                 // labelStyle: Theme.of(context).textTheme.titleMedium,
@@ -65,12 +78,17 @@ class AddTaskBottomSheet extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            Text(
-              "12/8/2030",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w500),
+            InkWell(
+              onTap: () {
+                chooseDay();
+              },
+              child: Text(
+                selectedDate.toString().substring(0, 10),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w500),
+              ),
             ),
             const SizedBox(
               height: 12,
@@ -81,7 +99,13 @@ class AddTaskBottomSheet extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  TaskModel taskModel = TaskModel(
+                      title: titleTextFiled.text,
+                      desc: descTextFiled.text,
+                      date: selectedDate.millisecondsSinceEpoch);
+                  FirebaseFunctions.addTask(taskModel);
+                },
                 child: Text(
                   "Add",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -95,5 +119,19 @@ class AddTaskBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void chooseDay() async {
+    DateTime? chosenDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+
+    if (chosenDate != null) {
+      selectedDate = chosenDate;
+      setState(() {});
+    }
   }
 }
