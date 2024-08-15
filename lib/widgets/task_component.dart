@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/task_model.dart';
 
 class TaskComponent extends StatelessWidget {
-  const TaskComponent({super.key});
+  TaskModel taskModel;
+  TaskComponent({super.key, required this.taskModel});
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,15 @@ class TaskComponent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Play basket ball",
+                  taskModel.title,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
-                  "Task description",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  taskModel.desc,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ],
             ),

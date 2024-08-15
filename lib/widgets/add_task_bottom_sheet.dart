@@ -105,6 +105,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       desc: descTextFiled.text,
                       date: selectedDate.millisecondsSinceEpoch);
                   FirebaseFunctions.addTask(taskModel);
+                  Navigator.pop(context);
                 },
                 child: Text(
                   "Add",
