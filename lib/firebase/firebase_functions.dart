@@ -19,9 +19,9 @@ class FirebaseFunctions {
     docRef.set(taskModel);
   }
 
-  static Future<QuerySnapshot<TaskModel>> getTasks() async {
+  static Stream<QuerySnapshot<TaskModel>> getTasks() {
     CollectionReference<TaskModel> collection = getTaskCollection();
 
-    return collection.get();
+    return collection.snapshots();
   }
 }

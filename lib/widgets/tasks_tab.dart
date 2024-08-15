@@ -28,8 +28,8 @@ class TasksTab extends StatelessWidget {
           height: 24,
         ),
         Expanded(
-          child: FutureBuilder(
-            future: FirebaseFunctions.getTasks(),
+          child: StreamBuilder(
+            stream: FirebaseFunctions.getTasks(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
