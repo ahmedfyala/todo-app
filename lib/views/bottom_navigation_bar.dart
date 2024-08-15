@@ -87,5 +87,5 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
     );
   }
 
-  List<Widget> tabs = const [TasksTab(), SettingTap()];
+  List<Widget> tabs = [TasksTab(), const SettingTap()];
 }

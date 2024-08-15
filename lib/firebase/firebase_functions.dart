@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:todo/model/task_model.dart';
 
 class FirebaseFunctions {
@@ -19,9 +20,20 @@ class FirebaseFunctions {
     docRef.set(taskModel);
   }
 
-  static Stream<QuerySnapshot<TaskModel>> getTasks() {
+  static Stream<QuerySnapshot<TaskModel>> getTasks(DateTime dateTime) {
     CollectionReference<TaskModel> collection = getTaskCollection();
 
-    return collection.snapshots();
+    return collection
+        .where("date",
+            isEqualTo: DateUtils.dateOnly(dateTime).millisecondsSinceEpoch)
+        .snapshots();
+  }
+
+  static Future<void> deleteTask(String id) {
+    return getTaskCollection().doc(id).delete();
+  }
+
+  static Future<void> updateTask(TaskModel model) {
+    return getTaskCollection().doc(model.id).update(model.toJson());
   }
 }
