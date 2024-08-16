@@ -4,7 +4,9 @@ import 'package:todo/widgets/setting_tab.dart';
 import 'package:todo/widgets/tasks_tab.dart';
 
 class BottomNavigationBarr extends StatefulWidget {
-  BottomNavigationBarr({super.key});
+  static const String routName = "BottomNavigationBarr";
+
+  const BottomNavigationBarr({super.key});
 
   @override
   State<BottomNavigationBarr> createState() => _BottomNavigationBarrState();
