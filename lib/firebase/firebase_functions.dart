@@ -39,23 +39,32 @@ class FirebaseFunctions {
     return getTaskCollection().doc(model.id).update(model.toJson());
   }
 
-  static createAccountAuth(String email, String password) async {
+  static createAccountAuth(
+    String email,
+    String password, {
+    required Function onSuccess,
+    required Function onError,
+  }) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      credential.user?.sendEmailVerification();
+      await credential.user?.sendEmailVerification();
+      onSuccess();
 
       // var val= credential.user.emailVerified = true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
+        onError(e.message);
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
+        onError(e.message);
         print('The account already exists for that email.');
       }
     } catch (e) {
+      onError(e.toString());
       print(e);
     }
   }

@@ -40,8 +40,25 @@ class SignUpView extends StatelessWidget {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                FirebaseFunctions.createAccountAuth(
-                    emailController.text, passwordController.text);
+                FirebaseFunctions.createAccountAuth(onSuccess: () {
+                  Navigator.pop(context);
+                }, onError: (error) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Error"),
+                        content: Text(error),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text("Cancel"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }, emailController.text, passwordController.text);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
