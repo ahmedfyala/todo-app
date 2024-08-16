@@ -47,6 +47,7 @@ class FirebaseFunctions {
         password: password,
       );
       credential.user?.sendEmailVerification();
+
       // var val= credential.user.emailVerified = true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -56,6 +57,24 @@ class FirebaseFunctions {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  static loginUser(
+    String email,
+    String password, {
+    required Function onSuccess,
+    required Function onError,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      onSuccess(credential.user?.displayName ?? "");
+      print(credential.user!.uid);
+    } on FirebaseAuthException catch (e) {
+      onError(e.toString());
+    } catch (e) {
+      onError(e.toString());
     }
   }
 }

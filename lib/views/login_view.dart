@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/views/bottom_navigation_bar.dart';
 import 'package:todo/views/sign_up_view.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routName = "LoginScreen";
-  const LoginScreen({super.key});
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +20,18 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Username or Email',
               ),
             ),
             const SizedBox(height: 16.0),
-            const TextField(
+            TextField(
+              controller: passwordController,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
               ),
@@ -33,7 +39,35 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                // Add your login logic here
+                FirebaseFunctions.loginUser(
+                  emailController.text,
+                  passwordController.text,
+                  onSuccess: (displayName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      BottomNavigationBarr.routName,
+                      (route) => false,
+                      arguments: displayName,
+                    );
+                  },
+                  onError: (error) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Error"),
+                        content: Text(error),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Okay"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,

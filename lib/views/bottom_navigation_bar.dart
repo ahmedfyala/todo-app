@@ -17,12 +17,13 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
 
   @override
   Widget build(BuildContext context) {
+    String displayName = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
         toolbarHeight: 90,
-        title: const Text(
-          "To Do List",
+        title: Text(
+          "Hello $displayName",
         ),
         titleSpacing: 51,
       ),
