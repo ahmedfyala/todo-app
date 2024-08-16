@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/firebase/firebase_functions.dart';
 
 class SignUpView extends StatelessWidget {
   static const String routName = "SignUpView";
@@ -38,7 +39,8 @@ class SignUpView extends StatelessWidget {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                // Add your login logic here
+                FirebaseFunctions.createAccountAuth(
+                    emailController.text, passwordController.text);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
