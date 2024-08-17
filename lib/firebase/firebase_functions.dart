@@ -27,6 +27,7 @@ class FirebaseFunctions {
     CollectionReference<TaskModel> collection = getTaskCollection();
 
     return collection
+        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
         .where("date",
             isEqualTo: DateUtils.dateOnly(dateTime).millisecondsSinceEpoch)
         .snapshots();
