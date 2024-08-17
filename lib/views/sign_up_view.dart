@@ -6,6 +6,7 @@ class SignUpView extends StatelessWidget {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   SignUpView({super.key});
 
   @override
@@ -30,6 +31,15 @@ class SignUpView extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             TextField(
+              controller: userNameController,
+              obscureText: false,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'User Name',
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
               controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
@@ -40,7 +50,8 @@ class SignUpView extends StatelessWidget {
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                FirebaseFunctions.createAccountAuth(onSuccess: () {
+                FirebaseFunctions.createAccountSignUp(
+                    userName: userNameController.text, onSuccess: () {
                   Navigator.pop(context);
                 }, onError: (error) {
                   showDialog(

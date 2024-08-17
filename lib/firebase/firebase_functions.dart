@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:todo/model/user_model.dart';
 
 class FirebaseFunctions {
   BuildContext? context;
@@ -39,9 +40,10 @@ class FirebaseFunctions {
     return getTaskCollection().doc(model.id).update(model.toJson());
   }
 
-  static createAccountAuth(
+  static createAccountSignUp(
     String email,
     String password, {
+    required String userName,
     required Function onSuccess,
     required Function onError,
   }) async {
@@ -52,9 +54,17 @@ class FirebaseFunctions {
         password: password,
       );
       await credential.user?.sendEmailVerification();
+      UserModel userModel = UserModel(
+        id: credential.user!.uid,
+        email: email,
+        userName: userName,
+        age: '',
+        phone: '',
+      );
+      addUser(userModel);
       onSuccess();
 
-      // var val= credential.user.emailVerified = true;
+      var val = credential.user?.emailVerified ?? true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         onError(e.message);
@@ -85,5 +95,23 @@ class FirebaseFunctions {
     } catch (e) {
       onError(e.toString());
     }
+  }
+
+  static CollectionReference<UserModel> getUserCollection() {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .withConverter<UserModel>(
+          fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+          toFirestore: (userModel, _) => userModel.toJson(),
+        );
+  }
+
+  static Future<void> addUser(UserModel userModel) {
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    DocumentReference<UserModel> userDoc = userCollection.doc();
+
+    userModel.id = userDoc.id;
+
+    return userDoc.set(userModel);
   }
 }
