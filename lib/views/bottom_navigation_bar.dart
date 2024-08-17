@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/provider/login_provider.dart';
+import 'package:todo/views/login_view.dart';
 import 'package:todo/widgets/add_task_bottom_sheet.dart';
 import 'package:todo/widgets/setting_tab.dart';
 import 'package:todo/widgets/tasks_tab.dart';
@@ -17,15 +21,28 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
 
   @override
   Widget build(BuildContext context) {
-    String displayName = ModalRoute.of(context)?.settings.arguments as String;
+    // String displayName = ModalRoute.of(context)?.settings.arguments as String;
+    var pro = Provider.of<LoginProvider>(context);
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
         toolbarHeight: 90,
         title: Text(
-          "Hello $displayName",
+          "Hello ${pro.userModel?.userName}",
         ),
         titleSpacing: 51,
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseFunctions.signOut();
+
+                Navigator.pushNamed(context, LoginScreen.routName);
+              },
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ))
+        ],
       ),
       body: tabs[selectedIndex],
       floatingActionButton: FloatingActionButton(

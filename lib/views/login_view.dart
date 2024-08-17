@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/provider/login_provider.dart';
 import 'package:todo/views/bottom_navigation_bar.dart';
 import 'package:todo/views/sign_up_view.dart';
 
@@ -11,6 +13,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pro = Provider.of<LoginProvider>(context);
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.all(24),
@@ -61,11 +64,12 @@ class LoginScreen extends StatelessWidget {
                     FirebaseFunctions.loginUser(
                         emailController.text, passwordController.text,
                         onSuccess: (userName) {
+                      pro.readUser();
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         BottomNavigationBarr.routName,
                         (route) => false,
-                        arguments: userName,
+                        arguments: pro.userModel?.userName,
                       );
                     }, onError: (error) {
                       showDialog(

@@ -107,6 +107,10 @@ class FirebaseFunctions {
         );
   }
 
+  static Future<void> signOut() async {
+    FirebaseAuth.instance.signOut();
+  }
+
   static Future<void> addUser(UserModel userModel) {
     CollectionReference<UserModel> userCollection = getUserCollection();
     DocumentReference<UserModel> userDoc = userCollection.doc();
@@ -114,5 +118,13 @@ class FirebaseFunctions {
     userModel.id = userDoc.id;
 
     return userDoc.set(userModel);
+  }
+
+  static Future<UserModel?> readUser() async {
+    DocumentSnapshot<UserModel> usersDoc = await getUserCollection()
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    return usersDoc.data();
   }
 }
