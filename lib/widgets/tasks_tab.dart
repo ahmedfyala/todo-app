@@ -46,7 +46,7 @@ class _TasksTabState extends State<TasksTab> {
               } else if (snapshot.hasError) {
                 return Column(
                   children: [
-                    const Text("Somthing Went Rong"),
+                    const Text("Something Went wrong"),
                     const SizedBox(
                       height: 20,
                     ),
