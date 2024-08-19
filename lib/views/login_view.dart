@@ -15,116 +15,127 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var pro = Provider.of<LoginProvider>(context);
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Column(
-              children: [
-                Text(
-                  "Welcome Back",
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ),
-                Text("Enter your credential to login"),
-              ],
-            ),
-            ////////////////////////////////////////////////////////
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      hintText: "Username",
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Text(
+                    "Welcome Back",
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  ),
+                  Text("Enter your credential to login"),
+                ],
+              ),
+              ////////////////////////////////////////////////////////
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        hintText: "Username",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none),
+                        fillColor: Colors.purple.withOpacity(0.1),
+                        filled: true,
+                        prefixIcon: const Icon(Icons.person)),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      hintText: "Password",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none),
                       fillColor: Colors.purple.withOpacity(0.1),
                       filled: true,
-                      prefixIcon: const Icon(Icons.person)),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none),
-                    fillColor: Colors.purple.withOpacity(0.1),
-                    filled: true,
-                    prefixIcon: const Icon(Icons.password),
+                      prefixIcon: const Icon(Icons.password),
+                    ),
+                    obscureText: true,
                   ),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    FirebaseFunctions.loginUser(
-                        emailController.text, passwordController.text,
-                        onSuccess: (userName) {
-                      pro.readUser();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        BottomNavigationBarr.routName,
-                        (route) => false,
-                        arguments: pro.userModel?.userName,
-                      );
-                    }, onError: (error) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text("Error"),
-                          content: Text(error),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Okay"),
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.purple,
-                  ),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
-              ],
-            ),
-            // //////////////////////////////////////////
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Forgot password?",
-                style: TextStyle(color: Colors.purple),
-              ),
-            ),
-            //////////////////////////////////////////////
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Dont have an account? "),
-                TextButton(
+                  const SizedBox(height: 30),
+                  ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, SignUpView.routName);
+                      FirebaseFunctions.loginUser(
+                          emailController.text, passwordController.text,
+                          onSuccess: (userName) {
+                        pro.readUser();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          BottomNavigationBarr.routName,
+                          (route) => false,
+                          arguments: pro.userModel?.userName,
+                        );
+                      }, onError: (error) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Error"),
+                            content: Text(error),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Okay"),
+                              ),
+                            ],
+                          ),
+                        );
+                      });
                     },
+                    style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.purple,
+                    ),
                     child: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.purple),
-                    ))
-              ],
-            ),
-          ],
+                      "Login",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              // //////////////////////////////////////////
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Forgot password?",
+                  style: TextStyle(color: Colors.purple),
+                ),
+              ),
+              //////////////////////////////////////////////
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("don't have an account? "),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, SignUpView.routName);
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(color: Colors.purple),
+                      ))
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
