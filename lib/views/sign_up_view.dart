@@ -133,7 +133,28 @@ class SignUpView extends StatelessWidget {
                         passwordController.text,
                         userName: userNameController.text,
                         onSuccess: () {
-                          Navigator.pop(context);
+                          userNameController.clear();
+                          emailController.clear();
+                          passwordController.clear();
+
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Success"),
+                                content: const Text(
+                                    "your account have been registered successfully"),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("ok"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         onError: (error) {
                           showDialog(
