@@ -5,6 +5,7 @@ import 'package:todo/firebase_options.dart';
 import 'package:todo/provider/login_provider.dart';
 import 'package:todo/theme/app_theme.dart';
 import 'package:todo/views/bottom_navigation_bar.dart';
+import 'package:todo/views/edit_view.dart';
 import 'package:todo/views/login_view.dart';
 import 'package:todo/views/sign_up_view.dart';
 
@@ -39,6 +40,7 @@ class ToDoApp extends StatelessWidget {
         BottomNavigationBarr.routName: (context) => BottomNavigationBarr(),
         LoginScreen.routName: (context) => LoginScreen(),
         SignUpView.routName: (context) => SignUpView(),
+        EditView.routName: (context) => EditView(),
       },
     );
   }

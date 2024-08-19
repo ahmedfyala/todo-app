@@ -54,7 +54,7 @@ class SignUpView extends StatelessWidget {
                       },
                       controller: userNameController,
                       decoration: InputDecoration(
-                        errorStyle: TextStyle(color: Colors.red),
+                        errorStyle: const TextStyle(color: Colors.red),
                         hintText: "Username",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
@@ -82,7 +82,7 @@ class SignUpView extends StatelessWidget {
                       controller: emailController,
                       decoration: InputDecoration(
                         hintText: "Email",
-                        errorStyle: TextStyle(color: Colors.red),
+                        errorStyle: const TextStyle(color: Colors.red),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:todo/views/edit_view.dart';
 
 class TaskComponent extends StatelessWidget {
   TaskModel taskModel;
@@ -35,9 +36,11 @@ class TaskComponent extends StatelessWidget {
             ),
             SlidableAction(
               onPressed: (context) {
-                // open new view with argument
-                // build ui
-                // button to save model
+                Navigator.pushNamed(
+                  context,
+                  EditView.routName,
+                  arguments: taskModel,
+                );
               },
               backgroundColor: Colors.blue,
               icon: Icons.edit,
