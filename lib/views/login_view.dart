@@ -9,6 +9,7 @@ class LoginScreen extends StatelessWidget {
   static const String routName = "LoginScreen";
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  var loginFormKey = GlobalKey<FormState>();
   LoginScreen({super.key});
 
   @override
@@ -17,7 +18,10 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(24),
+          // margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          height: MediaQuery.of(context).size.height - 50,
+          width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -34,83 +38,123 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               ////////////////////////////////////////////////////////
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                        hintText: "Username",
+              Form(
+                key: loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Field Required";
+                        }
+                        bool emailValid = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-z]+\.[a-zA-Z]+")
+                            .hasMatch(value);
+
+                        if (!emailValid) {
+                          return "please enter valid email";
+                        }
+
+                        return null;
+                      },
+                      controller: emailController,
+                      decoration: InputDecoration(
+                          hintText: "Email",
+                          errorStyle: const TextStyle(
+                            color: Colors.red,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide.none),
+                          fillColor: Colors.purple.withOpacity(0.1),
+                          filled: true,
+                          prefixIcon: const Icon(Icons.person)),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Field Required";
+                        }
+
+                        bool validPassword = RegExp(
+                                r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")
+                            .hasMatch(value);
+
+                        if (!validPassword) {
+                          return "please enter valid password ";
+                        }
+                        return null;
+                      },
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        errorStyle: const TextStyle(
+                          color: Colors.red,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
                         fillColor: Colors.purple.withOpacity(0.1),
                         filled: true,
-                        prefixIcon: const Icon(Icons.person)),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
-                      fillColor: Colors.purple.withOpacity(0.1),
-                      filled: true,
-                      prefixIcon: const Icon(Icons.password),
+                        prefixIcon: const Icon(Icons.password),
+                      ),
+                      obscureText: true,
                     ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      FirebaseFunctions.loginUser(
-                          emailController.text, passwordController.text,
-                          onSuccess: (userName) {
-                        pro.readUser();
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          BottomNavigationBarr.routName,
-                          (route) => false,
-                          arguments: pro.userModel?.userName,
-                        );
-                      }, onError: (error) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Error"),
-                            content: Text(error),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Okay"),
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.purple,
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (loginFormKey.currentState!.validate()) {
+                          FirebaseFunctions.loginUser(
+                            emailController.text,
+                            passwordController.text,
+                            onSuccess: (userName) {
+                              pro.readUser();
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                BottomNavigationBarr.routName,
+                                (route) => false,
+                                arguments: pro.userModel?.userName,
+                              );
+                            },
+                            onError: (error) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Error"),
+                                  content: Text(error),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Okay"),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.purple,
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+
               // //////////////////////////////////////////
               TextButton(
                 onPressed: () {},
@@ -125,13 +169,14 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   const Text("don't have an account? "),
                   TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, SignUpView.routName);
-                      },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(color: Colors.purple),
-                      ))
+                    onPressed: () {
+                      Navigator.pushNamed(context, SignUpView.routName);
+                    },
+                    child: const Text(
+                      "Sign Up",
+                      style: TextStyle(color: Colors.purple),
+                    ),
+                  ),
                 ],
               ),
             ],

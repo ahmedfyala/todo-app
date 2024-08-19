@@ -7,6 +7,7 @@ class SignUpView extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
+  GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
   SignUpView({super.key});
 
   @override
@@ -40,98 +41,146 @@ class SignUpView extends StatelessWidget {
                   )
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  TextField(
-                    controller: userNameController,
-                    decoration: InputDecoration(
+              Form(
+                key: signUpFormKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Required Field";
+                        }
+                        return null;
+                      },
+                      controller: userNameController,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.red),
                         hintText: "Username",
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: BorderSide.none),
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none,
+                        ),
                         fillColor: Colors.purple.withOpacity(0.1),
                         filled: true,
-                        prefixIcon: const Icon(Icons.person)),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Required Field";
+                        }
+                        bool validEmail = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-z]+\.[a-zA-Z]+")
+                            .hasMatch(value);
+                        if (!validEmail) {
+                          return "please enter valid email";
+                        }
+                        return null;
+                      },
+                      controller: emailController,
+                      decoration: InputDecoration(
                         hintText: "Email",
+                        errorStyle: TextStyle(color: Colors.red),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
                         fillColor: Colors.purple.withOpacity(0.1),
                         filled: true,
-                        prefixIcon: const Icon(Icons.email)),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
-                      fillColor: Colors.purple.withOpacity(0.1),
-                      filled: true,
-                      prefixIcon: const Icon(Icons.password),
+                        prefixIcon: const Icon(Icons.email),
+                      ),
                     ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Required Field";
+                        }
+                        bool validPassword = RegExp(
+                                r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")
+                            .hasMatch(value);
+
+                        if (!validPassword) {
+                          return "please enter valid password";
+                        }
+                        return null;
+                      },
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        errorStyle: TextStyle(color: Colors.red),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none),
+                        fillColor: Colors.purple.withOpacity(0.1),
+                        filled: true,
+                        prefixIcon: const Icon(Icons.password),
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
               Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  child: ElevatedButton(
-                    onPressed: () {
+                padding: const EdgeInsets.only(top: 3, left: 3),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (signUpFormKey.currentState!.validate()) {
                       FirebaseFunctions.createAccountSignUp(
-                          emailController.text, passwordController.text,
-                          userName: userNameController.text, onSuccess: () {
-                        Navigator.pop(context);
-                      }, onError: (error) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text("Error"),
-                              content: Text(error),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: const Text("Cancel"),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.purple,
-                    ),
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
+                        emailController.text,
+                        passwordController.text,
+                        userName: userNameController.text,
+                        onSuccess: () {
+                          Navigator.pop(context);
+                        },
+                        onError: (error) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Error"),
+                                content: Text(error),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Text("Cancel"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.purple,
+                  ),
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text("Already have an account?"),
                   TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(color: Colors.purple),
-                      ))
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(color: Colors.purple),
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
