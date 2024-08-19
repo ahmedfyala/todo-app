@@ -30,9 +30,13 @@ class ToDoApp extends StatelessWidget {
     var loginProvider = Provider.of<LoginProvider>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: lightTheme(),
-      darkTheme: darkTheme(),
+
+      // themeMode: ThemeMode.light,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      // darkTheme: darkTheme(),
       initialRoute: loginProvider.fireBaseAuthUser != null
           ? BottomNavigationBarr.routName
           : LoginScreen.routName,

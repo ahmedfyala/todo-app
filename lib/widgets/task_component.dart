@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:todo/theme/app_colors.dart';
+import 'package:todo/theme/app_styles.dart';
 import 'package:todo/views/edit_view.dart';
 
 class TaskComponent extends StatelessWidget {
@@ -13,7 +15,7 @@ class TaskComponent extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSecondary,
+        color: AppColors.secondaryDarkColor,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Slidable(
@@ -60,7 +62,7 @@ class TaskComponent extends StatelessWidget {
                 width: 3,
                 color: taskModel.isDone
                     ? Colors.green
-                    : Theme.of(context).colorScheme.primary,
+                    : AppColors.primaryLightColor,
               ),
               const SizedBox(
                 width: 10,
@@ -76,7 +78,7 @@ class TaskComponent extends StatelessWidget {
                               .textTheme
                               .titleLarge
                               ?.copyWith(color: Colors.green)
-                          : Theme.of(context).textTheme.titleLarge,
+                          : AppStyles.lightPoppins70018,
                     ),
                     Text(
                       taskModel.desc,
@@ -108,7 +110,7 @@ class TaskComponent extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(69, 34),
                         iconColor: Colors.white,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: AppColors.primaryLightColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

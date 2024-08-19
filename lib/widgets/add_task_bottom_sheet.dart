@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:todo/theme/app_colors.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   AddTaskBottomSheet({
@@ -69,12 +70,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
             const SizedBox(
               height: 25,
             ),
-            Text(
+            const Text(
               "Select Date",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(
               height: 12,
@@ -85,10 +86,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               },
               child: Text(
                 selectedDate.toString().substring(0, 10),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             const SizedBox(
@@ -98,7 +99,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: AppColors.primaryLightColor,
                 ),
                 onPressed: () {
                   TaskModel taskModel = TaskModel(
@@ -111,12 +112,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   FirebaseFunctions.addTask(taskModel);
                   Navigator.pop(context);
                 },
-                child: Text(
+                child: const Text(
                   "Add",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

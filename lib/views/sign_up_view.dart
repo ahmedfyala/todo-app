@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/theme/app_colors.dart';
 
 class SignUpView extends StatelessWidget {
   static const String routName = "SignUpView";
@@ -13,6 +14,7 @@ class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundLightColor,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -60,7 +62,7 @@ class SignUpView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: AppColors.primaryLightColor.withOpacity(0.2),
                         filled: true,
                         prefixIcon: const Icon(Icons.person),
                       ),
@@ -86,7 +88,7 @@ class SignUpView extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: AppColors.primaryLightColor.withOpacity(0.2),
                         filled: true,
                         prefixIcon: const Icon(Icons.email),
                       ),
@@ -109,11 +111,11 @@ class SignUpView extends StatelessWidget {
                       controller: passwordController,
                       decoration: InputDecoration(
                         hintText: "Password",
-                        errorStyle: TextStyle(color: Colors.red),
+                        errorStyle: const TextStyle(color: Colors.red),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: AppColors.primaryLightColor.withOpacity(0.2),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                       ),
@@ -179,11 +181,14 @@ class SignUpView extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: const StadiumBorder(),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.purple,
+                    backgroundColor: AppColors.primaryLightColor,
                   ),
                   child: const Text(
                     "Sign up",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.secondaryDarkColor,
+                    ),
                   ),
                 ),
               ),
@@ -197,7 +202,9 @@ class SignUpView extends StatelessWidget {
                     },
                     child: const Text(
                       "Login",
-                      style: TextStyle(color: Colors.purple),
+                      style: TextStyle(
+                        color: AppColors.primaryLightColor,
+                      ),
                     ),
                   ),
                 ],

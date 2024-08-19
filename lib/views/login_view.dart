@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/provider/login_provider.dart';
+import 'package:todo/theme/app_colors.dart';
 import 'package:todo/views/bottom_navigation_bar.dart';
 import 'package:todo/views/sign_up_view.dart';
 
@@ -16,6 +17,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var pro = Provider.of<LoginProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.backgroundLightColor,
       body: SingleChildScrollView(
         child: Container(
           // margin: const EdgeInsets.all(24),
@@ -27,7 +29,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               const Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 50,
                   ),
                   Text(
@@ -70,7 +72,8 @@ class LoginScreen extends StatelessWidget {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(18),
                               borderSide: BorderSide.none),
-                          fillColor: Colors.purple.withOpacity(0.1),
+                          fillColor:
+                              AppColors.primaryLightColor.withOpacity(0.2),
                           filled: true,
                           prefixIcon: const Icon(Icons.person)),
                     ),
@@ -81,13 +84,13 @@ class LoginScreen extends StatelessWidget {
                           return "Field Required";
                         }
 
-                        bool validPassword = RegExp(
-                                r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")
-                            .hasMatch(value);
+                        // bool validPassword = RegExp(
+                        //         r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")
+                        //     .hasMatch(value);
 
-                        if (!validPassword) {
-                          return "please enter valid password ";
-                        }
+                        // if (!validPassword) {
+                        //   return "please enter valid password ";
+                        // }
                         return null;
                       },
                       controller: passwordController,
@@ -99,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: AppColors.primaryLightColor.withOpacity(0.2),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                       ),
@@ -107,6 +110,11 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: AppColors.primaryLightColor,
+                      ),
                       onPressed: () {
                         if (loginFormKey.currentState!.validate()) {
                           FirebaseFunctions.loginUser(
@@ -125,6 +133,8 @@ class LoginScreen extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
+                                  backgroundColor:
+                                      AppColors.backgroundLightColor,
                                   title: const Text("Error"),
                                   content: Text(error),
                                   actions: [
@@ -141,14 +151,12 @@ class LoginScreen extends StatelessWidget {
                           );
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                        shape: const StadiumBorder(),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.purple,
-                      ),
                       child: const Text(
                         "Login",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: AppColors.secondaryDarkColor,
+                        ),
                       ),
                     ),
                   ],
@@ -160,7 +168,10 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {},
                 child: const Text(
                   "Forgot password?",
-                  style: TextStyle(color: Colors.purple),
+                  style: TextStyle(
+                    color: AppColors.primaryLightColor,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               //////////////////////////////////////////////
@@ -174,7 +185,9 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: const Text(
                       "Sign Up",
-                      style: TextStyle(color: Colors.purple),
+                      style: TextStyle(
+                        color: AppColors.primaryLightColor,
+                      ),
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/firebase/firebase_functions.dart';
+import 'package:todo/theme/app_colors.dart';
 import 'package:todo/widgets/task_component.dart';
 
 class TasksTab extends StatefulWidget {
@@ -27,10 +28,10 @@ class _TasksTabState extends State<TasksTab> {
             setState(() {});
           },
           leftMargin: 20,
-          monthColor: Theme.of(context).colorScheme.secondary,
-          dayColor: Theme.of(context).colorScheme.primary,
-          activeDayColor: Theme.of(context).colorScheme.secondary,
-          activeBackgroundDayColor: Theme.of(context).colorScheme.primary,
+          monthColor: AppColors.secondaryLightColor,
+          dayColor: AppColors.primaryLightColor,
+          activeDayColor: AppColors.secondaryDarkColor,
+          activeBackgroundDayColor: AppColors.primaryLightColor,
           selectableDayPredicate: (date) => date.day != 23,
           locale: 'en',
         ),

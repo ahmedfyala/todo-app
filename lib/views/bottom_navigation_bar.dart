@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/provider/login_provider.dart';
+import 'package:todo/theme/app_colors.dart';
 import 'package:todo/views/login_view.dart';
 import 'package:todo/widgets/add_task_bottom_sheet.dart';
 import 'package:todo/widgets/setting_tab.dart';
@@ -24,11 +25,17 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
     // String displayName = ModalRoute.of(context)?.settings.arguments as String;
     var pro = Provider.of<LoginProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.backgroundLightColor,
       extendBody: true,
       appBar: AppBar(
+        backgroundColor: AppColors.primaryLightColor,
         toolbarHeight: 90,
         title: Text(
           "Hello ${pro.userModel?.userName}",
+          style: const TextStyle(
+            color: AppColors.secondaryDarkColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         titleSpacing: 51,
         actions: [
@@ -46,6 +53,7 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
       ),
       body: tabs[selectedIndex],
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryLightColor,
         onPressed: () {
           showModalBottomSheet(
             isScrollControlled: true,
@@ -75,28 +83,33 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).colorScheme.onSecondary,
+        color: AppColors.secondaryDarkColor,
         padding: EdgeInsets.zero,
         notchMargin: 9,
         shape: const CircularNotchedRectangle(),
         child: BottomNavigationBar(
+          selectedItemColor: AppColors.primaryLightColor,
+          unselectedItemColor: AppColors.bottomNavigationBarIconColor,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.shifting,
           elevation: 0,
           currentIndex: selectedIndex,
           onTap: (value) {
             selectedIndex = value;
             setState(() {});
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                icon: const Icon(
+                backgroundColor: Colors.transparent,
+                icon: Icon(
                   Icons.format_list_bulleted,
                   size: 30,
                 ),
                 label: ''),
             BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).colorScheme.onSecondary,
-                icon: const Icon(
+                backgroundColor: AppColors.secondaryDarkColor,
+                icon: Icon(
                   Icons.settings,
                   size: 30,
                 ),

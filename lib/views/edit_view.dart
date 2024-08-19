@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:todo/theme/app_colors.dart';
 import 'package:todo/theme/app_styles.dart';
 
 class EditView extends StatefulWidget {
@@ -22,9 +23,18 @@ class _EditViewState extends State<EditView> {
     TaskModel? taskModel =
         ModalRoute.of(context)!.settings.arguments as TaskModel;
     return Scaffold(
+      backgroundColor: AppColors.backgroundLightColor,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         toolbarHeight: 90,
-        title: const Text("Edit View"),
+        backgroundColor: AppColors.primaryLightColor,
+        title: const Text(
+          "Edit View",
+          style: TextStyle(
+            color: AppColors.secondaryDarkColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Card(
         margin: const EdgeInsets.all(40),
@@ -36,7 +46,7 @@ class _EditViewState extends State<EditView> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: 150,
               ),
               Text(
                 "Edit Task",
@@ -87,14 +97,23 @@ class _EditViewState extends State<EditView> {
                   }
                 },
                 child: const InkWell(
-                    child: Text(
-                  "Select Time",
-                )),
+                  child: Text(
+                    "Select Time",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 5,
               ),
               Text(
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
                 DateFormat.yMd().format(
                   DateUtils.dateOnly(
                     DateTime.fromMillisecondsSinceEpoch(taskModel.date),
@@ -105,11 +124,24 @@ class _EditViewState extends State<EditView> {
                 height: 15,
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 90),
+                  backgroundColor: AppColors.primaryLightColor,
+                ),
                 onPressed: () async {
                   await FirebaseFunctions.updateTask(taskModel);
                   Navigator.pop(context);
                 },
-                child: const Text("Save Changes"),
+                child: const Text(
+                  "Save Changes",
+                  style: TextStyle(
+                    color: AppColors.secondaryDarkColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           ),
