@@ -24,6 +24,8 @@ class _BottomNavigationBarrState extends State<BottomNavigationBarr> {
   Widget build(BuildContext context) {
     // String displayName = ModalRoute.of(context)?.settings.arguments as String;
     var pro = Provider.of<LoginProvider>(context);
+    print("############ BottomNavigationBarr ${pro.userModel?.userName}");
+
     return Scaffold(
       backgroundColor: AppColors.backgroundLightColor,
       extendBody: true,

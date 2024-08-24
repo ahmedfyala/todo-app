@@ -5,10 +5,10 @@ import 'package:todo/theme/app_colors.dart';
 class SignUpView extends StatelessWidget {
   static const String routName = "SignUpView";
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
-  GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
   SignUpView({super.key});
 
   @override

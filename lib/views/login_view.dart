@@ -16,6 +16,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pro = Provider.of<LoginProvider>(context);
+    print("############ LoginScreen ${pro.userModel?.userName}");
     return Scaffold(
       backgroundColor: AppColors.backgroundLightColor,
       body: SingleChildScrollView(
@@ -120,13 +121,14 @@ class LoginScreen extends StatelessWidget {
                           FirebaseFunctions.loginUser(
                             emailController.text,
                             passwordController.text,
-                            onSuccess: (userName) {
-                              pro.readUser();
+                            onSuccess: (userName) async {
+                              await pro.readUser();
                               Navigator.pushNamedAndRemoveUntil(
+                                // ignore: use_build_context_synchronously
                                 context,
                                 BottomNavigationBarr.routName,
                                 (route) => false,
-                                arguments: pro.userModel?.userName,
+                                arguments: pro.userModel?.userName ?? "",
                               );
                             },
                             onError: (error) {

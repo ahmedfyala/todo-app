@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/firebase/firebase_functions.dart';
 import 'package:todo/firebase_options.dart';
 import 'package:todo/provider/login_provider.dart';
-import 'package:todo/theme/app_theme.dart';
 import 'package:todo/views/bottom_navigation_bar.dart';
 import 'package:todo/views/edit_view.dart';
 import 'package:todo/views/login_view.dart';
@@ -14,6 +14,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  var u = FirebaseFunctions.readUser();
+
+  print("&&&&&&&&&&&&&&&&&&&& $u");
   // await FirebaseFirestore.instance.enableNetwork();
   // await FirebaseFirestore.instance.disableNetwork();
   runApp(ChangeNotifierProvider(

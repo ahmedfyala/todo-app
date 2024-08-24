@@ -15,8 +15,8 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  void readUser() {
-    FirebaseFunctions.readUser();
+  Future<void> readUser() async {
+    await FirebaseFunctions.readUser();
     notifyListeners();
   }
 }
